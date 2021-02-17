@@ -1,5 +1,5 @@
 #!/bin/bash
-data_dir="./datasets"
+data_dir="../datasets"
 if [[ $HOSTNAME == *"peregrine"* ]]; then
   data_dir="/data/$USER/"
 fi

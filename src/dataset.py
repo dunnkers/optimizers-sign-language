@@ -11,14 +11,8 @@ def getdataset(data, input_shape=(224, 224)):
     Returns: a tf.data.Dataset object
     """
     image_paths = data['filepath'].values
-    classes, class_names = pd.factorize(data['class'].sort_values())
+    labels, class_names = pd.factorize(data['class'].sort_values())
     num_classes = len(data['class'].unique())
-
-    labels = tf.keras.utils.to_categorical(
-        classes,
-        num_classes=num_classes,
-        dtype='uint8'
-    )
 
     dataset = paths_and_labels_to_dataset(
         image_paths,
