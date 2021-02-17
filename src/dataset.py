@@ -2,7 +2,7 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow.python.keras.preprocessing.image_dataset import paths_and_labels_to_dataset
 
-def getdataset(data):
+def getdataset(data, input_shape=(224, 224)):
     """
     `data` must be a Pandas DataFrame with columns:
         `filepath`: path to image (string)
@@ -22,7 +22,7 @@ def getdataset(data):
 
     dataset = paths_and_labels_to_dataset(
         image_paths,
-        (200, 200),
+        input_shape,
         3,
         labels,
         'categorical',
