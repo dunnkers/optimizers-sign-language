@@ -1,11 +1,13 @@
 import tensorflow as tf
 import numpy as np
+import pandas as pd
 import json
 import argparse
 
 from tensorflow.keras.applications import MobileNetV3Small
 from tensorflow.keras.layers import Input
 
+from combine_datasets import combine_datasets
 from dataset import getdataset
 from time_history import TimeHistory
 
@@ -46,8 +48,10 @@ MODEL_NAME = args.model_name
 
 ####################### Load data #######################
 
+data_paths = pd.read_csv(DATA_PATH)
+
 ds_train = getdataset(
-    DATA_PATH,
+    data_paths,
     batch_size=BATCH_SIZE,
     input_shape=DIMS[:2],
     seed=seed,
@@ -57,10 +61,10 @@ ds_train = getdataset(
 
 ds_train = ds_train.cache().prefetch(AUTOTUNE)
 
-ds_test = tf.keras.preprocessing.image_dataset_from_directory(
-    DATA_PATH,
+ds_test = getdataset(
+    data_paths,
     batch_size=BATCH_SIZE,
-    image_size=DIMS[:2],
+    input_shape=DIMS[:2],
     seed=seed,
     validation_split=0.1,
     subset='validation'
