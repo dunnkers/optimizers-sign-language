@@ -2,6 +2,7 @@ import pandas as pd
 from tensorflow.python.keras.preprocessing.image_dataset import paths_and_labels_to_dataset
 from tensorflow.python.keras.preprocessing import dataset_utils
 from tensorflow.python.keras.layers.preprocessing import image_preprocessing
+from keras.utils import to_categorical
 
 def getdataset(data,
                label_mode='int',
@@ -28,6 +29,9 @@ def getdataset(data,
     image_paths = data['filepath'].values
     labels, class_names = pd.factorize(data['class'].sort_values())
     num_classes = len(data['class'].unique())
+
+    # Int labels to one-hot-encoded vector
+    labels = to_categorical(labels, dtype='int8')
 
     # Check args
     interpolation = image_preprocessing.get_interpolation(interpolation)
