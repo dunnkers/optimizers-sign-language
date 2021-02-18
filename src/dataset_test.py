@@ -1,14 +1,11 @@
 import unittest
-import pandas as pd
+import string
 from dataset import getdataset
 from combine_datasets import combine_datasets
-import string
 
 class TestSum(unittest.TestCase):
     def setUp(self):
-        # data_dir = sp.getoutput('../util/data_dir.sh')
-        # data = pd.read_csv('./test_data/index.csv')
-        self.data = pd.read_csv('./test_data/index.csv')
+        self.data = combine_datasets('./test_data', class_encoding='file')
         self.dataset = getdataset(self.data)
 
     def test_classnames(self):

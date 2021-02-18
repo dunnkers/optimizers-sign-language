@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import argparse
 
-def combine_datasets(data_dir):
+def combine_datasets(data_dir, class_encoding='subdirectory'):
     # Search datasets folder recursively for jpg/jpeg files
     paths = Path(data_dir).rglob('*.jp*')
     df = pd.DataFrame({ 'filepath': paths })
@@ -21,7 +21,10 @@ def combine_datasets(data_dir):
     df['filename'] = df['filepath'].map(os.path.basename)
 
     # Define class as last subdirectory
-    df['class'] = df['filepath'].str.split('/').str[-2]
+    if class_encoding == 'subdirectory':
+        df['class'] = df['filepath'].str.split('/').str[-2]
+    else: # could also use first filename character
+        df['class'] = df['filename'].str[0]
 
     # Only keep alphabetic classes
     df = df[df['class'].str.match(r'^[a-zA-Z]$')]
@@ -33,11 +36,12 @@ def combine_datasets(data_dir):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Combine datasets")
-    parser.add_argument('data_dir', metavar='d', default='./datasets')
+    parser.add_argument('data_dir', metavar='d')
+    parser.add_argument('--class_encoding', default='subdirectory')
     args = parser.parse_args()
 
     print(f'Combining datasets from {args.data_dir}...')
-    df = combine_datasets(args.data_dir)
+    df = combine_datasets(args.data_dir, args.class_encoding)
 
     # Save combined dataset as .csv
     indexfile = os.path.join(args.data_dir, 'data.csv')
