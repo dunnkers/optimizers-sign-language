@@ -30,8 +30,29 @@ class TestTrainModel(unittest.TestCase):
         model.save('trainedmodel')
         with open('trainedmodel'+"_history.txt", 'w') as f:
             json.dump(hist.history, f)
+    
+    def test_inputmodelfit(self):
+        """Works the same as above, but different functions."""
+        ds_train = getdataset(self.data,
+            seed=343,
+            validation_split=0.1,
+            subset='training').cache().prefetch(tf.data.AUTOTUNE)
+        ds_test = getdataset(self.data,
+            seed=343,
+            validation_split=0.1,
+            subset='validation').cache().prefetch(tf.data.AUTOTUNE)
 
-        self.assertTrue(True)
+        i = Input((224, 224, 3))
+        x = tf.keras.applications.mobilenet_v3.preprocess_input(i)
+        x = MobileNetV3Small(input_tensor=x, classes=26, weights=None)(x)
+        model = tf.keras.Model(inputs=i, outputs=x)
+
+        model.compile(
+            optimizer='adam', 
+            loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
+            metrics=['accuracy'])
+        print(model.summary())
+        hist = model.fit(ds_train, validation_data=ds_test, epochs=1)
 
 if __name__ == '__main__':
     unittest.main()
