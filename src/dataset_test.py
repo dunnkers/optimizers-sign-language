@@ -1,14 +1,13 @@
 import unittest
 import pandas as pd
 from dataset import getdataset
+from combine_datasets import combine_datasets
 import string
-import tensorflow as tf
-from keras.metrics import top_k_categorical_accuracy
-from keras.optimizers import Adam
-import subprocess as sp
 
 class TestSum(unittest.TestCase):
     def setUp(self):
+        # data_dir = sp.getoutput('../util/data_dir.sh')
+        # data = pd.read_csv('./test_data/index.csv')
         self.data = pd.read_csv('./test_data/index.csv')
         self.dataset = getdataset(self.data)
 
@@ -24,21 +23,6 @@ class TestSum(unittest.TestCase):
         dataset = getdataset(self.data, seed=343, validation_split=0.25, subset='validation')
         imgs, labels = next(iter(dataset.take(1)))
         self.assertTrue(len(imgs) == 8)
-    
-    def test_training(self):
-        root_dir = sp.getoutput('./src/root-dir.sh')
-        data = pd.read_csv('./test_data/index.csv')
-        data['filepath'] = f'{root_dir}/' + data['filepath']
-        dataset = getdataset(data)
-
-        model = tf.keras.applications.MobileNetV3Small(weights=None, classes=26)
-        model.compile(  optimizer=Adam(lr=1e-4), 
-                        loss='categorical_crossentropy',
-                        metrics=[
-                            'categorical_accuracy',
-                            top_k_categorical_accuracy
-                        ])
-        model.fit(x=dataset)
 
 if __name__ == '__main__':
     unittest.main()

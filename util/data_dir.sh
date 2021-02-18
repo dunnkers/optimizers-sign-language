@@ -1,6 +1,6 @@
 #!/bin/bash
-root_dir=$(src/root-dir.sh)
-data_dir="$root_dir/datasets"
+repo_dir=$(git rev-parse --show-toplevel)
+data_dir="$repo_dir/datasets"
 if [[ $HOSTNAME == *"peregrine"* ]]; then
   data_dir="/data/$USER/"
 fi

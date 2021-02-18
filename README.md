@@ -11,10 +11,10 @@ pip install -r requirements.txt
 
 3. Download the data from Kaggle
 ```shell
-sh src/download-data.sh
+sh util/download_data.sh
 ```
 
-4. (Optional) Combine and filter the data
-Run the `src/data-exploration.ipynb` Notebook in its entirety. It will produce a file at `dataset/data.csv`, describing the dataset.
-
-5. Use the dataset 💠 See `src/data-set.py` for an example of constructing a Keras `Dataset` object.
+4. Combine datasets
+```shell
+python src/combine_datasets.py $(sh util/data_dir.sh)
+```

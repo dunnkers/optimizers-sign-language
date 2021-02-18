@@ -1,6 +1,6 @@
 #!/bin/bash
 source venv/bin/activate
-data_dir=$(src/data-dir.sh)
+data_dir=$(util/data-dir.sh)
 echo "Using dataset directory: $data_dir"
 
 # grassknoted/asl-alphabet
