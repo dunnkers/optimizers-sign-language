@@ -1,5 +1,5 @@
-kaggle==1.5.10
+kaggle
 Keras==2.4.3
-numpy==1.20.1
-pandas==1.2.2
+numpy
+pandas
 tensorflow==2.4.1

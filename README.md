@@ -44,3 +44,5 @@ Download the results using:
 rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/logs ./
 rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/models ./
 ```
+
+<!-- tensorflowjs_converter --input_format=tf_saved_model --output_node_names=MobilenetV3/Predictions/Reshape_1 --saved_model_tags=serve ./models/my_model/ ./models/my_model/web_model -->
