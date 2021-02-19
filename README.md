@@ -41,5 +41,6 @@ sbatch util/peregrine.sh
 
 Download the results using:
 ```shell
+rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/logs ./
 rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/models ./
 ```
