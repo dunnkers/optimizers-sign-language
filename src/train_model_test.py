@@ -17,5 +17,18 @@ class TestTrainModel(unittest.TestCase):
         hist, model = train_model(data, args)
         print(hist)
 
+    def test_train_model_optimizer(self):
+        data = combine_datasets('./test_data', class_encoding='file')
+
+        args = Namespace()
+        args.batch_size = 32
+        args.optimizer = 'rmsprop'
+        args.epochs = 1
+        args.steps_per_epoch = None
+        args.validation_steps = None
+        
+        hist, model = train_model(data, args)
+        print(hist)
+
 if __name__ == '__main__':
     unittest.main()

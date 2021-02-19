@@ -46,3 +46,13 @@ rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/models ./
 ```
 
 <!-- tensorflowjs_converter --input_format=tf_saved_model --output_node_names=MobilenetV3/Predictions/Reshape_1 --saved_model_tags=serve ./models/my_model/ ./models/my_model/web_model -->
+
+<!--  'adadelta': adadelta_v2.Adadelta,
+      'adagrad': adagrad_v2.Adagrad,
+      'adam': adam_v2.Adam,
+      'adamax': adamax_v2.Adamax,
+      'nadam': nadam_v2.Nadam,
+      'rmsprop': rmsprop_v2.RMSprop,
+      'sgd': gradient_descent_v2.SGD,
+      'ftrl': ftrl.Ftrl,
+ -->
