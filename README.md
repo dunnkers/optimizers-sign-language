@@ -13,12 +13,12 @@ Will install all required packages.
 
 3. Download the data from Kaggle
 ```shell
-sh util/download_data.sh
+sh util/data_download.sh <directory_to_store_data>
 ```
 
 4. Combine datasets
 ```shell
-python src/combine_datasets.py $(sh util/data_dir.sh)
+python src/combine_datasets.py <directory_to_store_data>
 ```
 
 5. Run training
@@ -29,7 +29,7 @@ python src/train_model_test.py
 
 Do a full training cycle:
 ```shell
-python src/train_model.py -d $(sh util/data_dir.sh)/data.csv
+python src/train_model.py -d <directory_to_store_data>/data.csv
 ```
 
 ## Peregrine

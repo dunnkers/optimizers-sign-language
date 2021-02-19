@@ -1,7 +1,12 @@
 #!/bin/bash
+if [ ! -d "$1" ]; then
+    echo 'Error: first argument must be a valid directory'
+    exit
+fi;
+
 source venv/bin/activate
-data_dir=$(util/data_dir.sh)
-echo "Using dataset directory: $data_dir"
+data_dir=$1
+echo "Using dataset directory: $1"
 
 # grassknoted/asl-alphabet
 kaggle datasets download -p $data_dir grassknoted/asl-alphabet

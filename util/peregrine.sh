@@ -13,6 +13,6 @@ module load Python/3.8.2-GCCcore-9.3.0
 source venv/bin/activate
 pip install -r requirements.txt
 python src/train_model.py \
-    --path $(sh util/data_dir.sh)/data.csv \
+    --path /data/${USER}/data.csv \
     --name ${SLURM_ARRAY_JOB_ID} \
     --epochs ${SLURM_ARRAY_TASK_ID}
