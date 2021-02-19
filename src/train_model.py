@@ -1,13 +1,13 @@
 import tensorflow as tf
-import numpy as np
 import pandas as pd
 import json
 import argparse
+import os
 
 from tensorflow.keras.applications import MobileNetV3Small
 from tensorflow.keras.layers import Input
+from keras.metrics import top_k_categorical_accuracy
 
-from combine_datasets import combine_datasets
 from dataset import getdataset
 from time_history import TimeHistory
 
@@ -22,6 +22,7 @@ parser.add_argument('-o', '--optimizer', dest='optimizer', default='adam')
 parser.add_argument('-e', '--epochs', dest='epochs', type=int, default=10)
 parser.add_argument('-s', '--steps-per-epoch', dest='steps_per_epoch', type=int)
 parser.add_argument('-v', '--validation-steps', dest='validation_steps', type=int)
+parser.add_argument('-d', '--output_dir', dest='output_dir', default='models')
 parser.add_argument('-n', '--name', dest='model_name', default='my_model')
 
 args = parser.parse_args()
@@ -32,6 +33,7 @@ args = parser.parse_args()
 seed = 42
 AUTOTUNE = tf.data.AUTOTUNE
 DATA_PATH = args.data_path
+OUTPUT_DIR = args.output_dir
 
 
 ####################### Set hyperparameters #######################
@@ -84,7 +86,9 @@ model = tf.keras.Model(inputs=i, outputs=x)
 model.compile(
     optimizer=OPTIMIZER, 
     loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
-    metrics=['accuracy'])
+    metrics=['accuracy',
+             'categorical_accuracy',
+             top_k_categorical_accuracy])
 print(model.summary())
 
 time_callback = TimeHistory()
@@ -102,10 +106,12 @@ hist = model.fit(ds_train,
 
 ####################### Save output #######################
 
-model.save(MODEL_NAME)
+out_dir = os.path.join(OUTPUT_DIR, MODEL_NAME)
+model.save(out_dir)
 
 # Add epoch times to history
 hist.history['epoch_time'] = time_callback.times
 
-with open(MODEL_NAME+"/history.json", 'w') as f:
+out_file = os.path.join(OUTPUT_DIR, 'history.json')
+with open(out_file, 'w') as f:
     json.dump(hist.history, f)
