@@ -112,6 +112,6 @@ model.save(out_dir)
 # Add epoch times to history
 hist.history['epoch_time'] = time_callback.times
 
-out_file = os.path.join(OUTPUT_DIR, 'history.json')
+out_file = os.path.join(out_dir, 'history.json')
 with open(out_file, 'w') as f:
     json.dump(hist.history, f)

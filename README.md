@@ -9,6 +9,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Will install all required packages.
+
 3. Download the data from Kaggle
 ```shell
 sh util/download_data.sh
@@ -17,4 +19,15 @@ sh util/download_data.sh
 4. Combine datasets
 ```shell
 python src/combine_datasets.py $(sh util/data_dir.sh)
+```
+
+5. Run training
+Test using just 32 samples:
+```shell
+python src/train_model_test.py
+```
+
+Do a full training cycle:
+```shell
+python src/train_model.py -d $(sh util/data_dir.sh)/data.csv
 ```

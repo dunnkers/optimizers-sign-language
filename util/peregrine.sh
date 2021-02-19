@@ -9,5 +9,6 @@
 # → do make sure /logs directory exists!
 
 module load Python/3.8.2-GCCcore-9.3.0
-pip3 install -r requirements.txt --user
+source venv/bin/activate
+pip3 install -r requirements.txt
 python3 src/train_model_test.py
