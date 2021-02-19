@@ -5,6 +5,9 @@ import tensorflow as tf
 from tensorflow.keras.applications import MobileNetV3Small
 from tensorflow.keras.layers import Input
 import json
+import os
+from time_history import TimeHistory
+from keras.metrics import top_k_categorical_accuracy
 
 class TestTrainModel(unittest.TestCase):
     def setUp(self):
@@ -15,20 +18,26 @@ class TestTrainModel(unittest.TestCase):
         self.dataset = self.dataset.cache().prefetch(tf.data.AUTOTUNE)
 
         # model setup
+        time_callback = TimeHistory()
         model = tf.keras.applications.MobileNetV3Small(
             weights=None, classes=26)
         model.compile(
             optimizer='adam', 
             loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
-            metrics=['accuracy'])
+            metrics=['accuracy',
+                'categorical_accuracy',
+                top_k_categorical_accuracy])
         print(model.summary())
 
         # train model
-        hist = model.fit(self.dataset, epochs=1)
+        hist = model.fit(self.dataset, epochs=1,
+            callbacks=[time_callback])
+        hist.history['epoch_time'] = time_callback.times
 
         # save model
-        model.save('trainedmodel')
-        with open('trainedmodel'+"_history.txt", 'w') as f:
+        model.save(os.path.join('models', 'test'))
+        filepath = os.path.join('models', 'test', 'history.json')
+        with open(filepath, 'w') as f:
             json.dump(hist.history, f)
     
     def test_inputmodelfit(self):
@@ -50,7 +59,10 @@ class TestTrainModel(unittest.TestCase):
         model.compile(
             optimizer='adam', 
             loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
-            metrics=['accuracy'])
+            metrics=[
+                'accuracy',
+                'categorical_accuracy',
+                top_k_categorical_accuracy])
         print(model.summary())
         hist = model.fit(ds_train, validation_data=ds_test, epochs=1)
 
