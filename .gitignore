@@ -4,3 +4,5 @@
 venv
 .ipynb_checkpoints
 /models
+/logs/*
+!/logs/.gitkeep
