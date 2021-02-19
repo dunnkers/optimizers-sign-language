@@ -31,3 +31,15 @@ Do a full training cycle:
 ```shell
 python src/train_model.py -d $(sh util/data_dir.sh)/data.csv
 ```
+
+## Peregrine
+Follow the instructions above, will work for Peregrine just as well. Submit a job using:
+
+```shell
+sbatch util/peregrine.sh
+```
+
+Download the results using:
+```shell
+rsync -aP $PEREGRINE_USERNAME@peregrine.hpc.rug.nl:~/deep-learning/models ./
+```
