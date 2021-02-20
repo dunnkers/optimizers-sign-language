@@ -15,7 +15,6 @@ class TestTrainModel(unittest.TestCase):
         args.validation_steps = None
 
         hist, model = train_model(data, args)
-        print(hist)
 
     def test_train_model_optimizer(self):
         data = combine_datasets('./test_data', class_encoding='file')
@@ -28,7 +27,6 @@ class TestTrainModel(unittest.TestCase):
         args.validation_steps = None
         
         hist, model = train_model(data, args)
-        print(hist)
 
 if __name__ == '__main__':
     unittest.main()

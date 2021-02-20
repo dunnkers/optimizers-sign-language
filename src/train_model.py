@@ -1,6 +1,5 @@
 import tensorflow as tf
 import pandas as pd
-import json
 import argparse
 import os
 
@@ -12,7 +11,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 from dataset import getdataset
 from callbacks.batch_loss import BatchLoss
 from callbacks.epoch_loss import EpochLoss
-
+from get_optimizer import get_optimizer
 
 def train_model(data_paths,
                 args,
@@ -103,11 +102,25 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--name', dest='model_name', default='my_model')
     args = parser.parse_args()
 
-    ####################### Callbacks  #######################
-    
+    ####################### Out directory  #######################
+
     out_dir = os.path.join(args.output_dir, args.model_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
+
+    ####################### Optimizers  #######################
+    args.optimizer = get_optimizer(args.optimizer)
+    print(f'Using optimizer: {args.optimizer._name}')
+    # Determine and print config
+    optim_config = args.optimizer.get_config()
+    df_config = pd.DataFrame.from_records([ args.optimizer.get_config() ])
+    df_config.to_csv(os.path.join(out_dir, 'optimizer.csv'), index=False)
+    print(f'Optimizer config: \n{df_config}')
+    # Adapt new optimizer config
+    args.optimizer = args.optimizer.from_config(optim_config)
+
+    ####################### Callbacks  #######################
+    
     batch_loss = BatchLoss(os.path.join(out_dir, 'batch_loss.csv'))
     epoch_loss = EpochLoss(os.path.join(out_dir, 'epoch_loss.csv'))
     model_file = os.path.join(out_dir, 'checkpoints', 
