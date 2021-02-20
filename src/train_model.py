@@ -3,7 +3,7 @@ import pandas as pd
 import argparse
 import os
 
-from tensorflow.keras.applications import MobileNetV3Small
+from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.layers import Input
 from keras.metrics import top_k_categorical_accuracy
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -45,8 +45,8 @@ def train_model(data_paths,
     ####################### Configure model #######################
 
     i = Input(dims)
-    x = tf.keras.applications.mobilenet_v3.preprocess_input(i)
-    x = MobileNetV3Small(input_tensor=x, classes=classes, weights=None)(x)
+    x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
+    x = MobileNetV2(input_tensor=x, classes=classes, weights=None)(x)
 
     model = tf.keras.Model(inputs=i, outputs=x)
 

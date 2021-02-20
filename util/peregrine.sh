@@ -9,7 +9,7 @@
 #SBATCH --array=0-7
 # → do make sure /logs directory exists!
 
-module load Python/3.8.2-GCCcore-9.3.0
+module load TensorFlow
 source venv/bin/activate
 pip install -r requirements.txt
 python src/train_model.py \
