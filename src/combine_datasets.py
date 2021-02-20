@@ -41,7 +41,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print(f'Combining datasets from {args.data_dir}...')
-    df = combine_datasets(args.data_dir, args.class_encoding)
+    df = combine_datasets(args.data_dir, class_encoding=args.class_encoding)
 
     # Save combined dataset as .csv
     indexfile = os.path.join(args.data_dir, 'data.csv')
