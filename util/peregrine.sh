@@ -14,5 +14,5 @@ source venv/bin/activate
 pip install -r requirements.txt
 python src/train_model.py \
     --path /data/${USER}/data.csv \
-    --name ${SLURM_ARRAY_JOB_ID} \
+    --name ${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID} \
     --epochs ${SLURM_ARRAY_TASK_ID}
