@@ -7,10 +7,11 @@ import os
 from tensorflow.keras.applications import MobileNetV3Small
 from tensorflow.keras.layers import Input
 from keras.metrics import top_k_categorical_accuracy
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 from dataset import getdataset
-from callbacks.epoch_time import EpochTime
 from callbacks.batch_loss import BatchLoss
+from callbacks.epoch_loss import EpochLoss
 
 
 def train_model(data_paths,
@@ -107,25 +108,19 @@ if __name__ == '__main__':
     out_dir = os.path.join(args.output_dir, args.model_name)
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    epoch_time = EpochTime()
     batch_loss = BatchLoss(os.path.join(out_dir, 'batch_loss.csv'))
+    epoch_loss = EpochLoss(os.path.join(out_dir, 'epoch_loss.csv'))
+    model_file = os.path.join(out_dir, 'checkpoints', 
+        r'epoch={epoch},val_loss={val_loss:.2f}.h5')
+    model_checkpoint = ModelCheckpoint(model_file, verbose=1)
+
 
     ####################### Train model #######################
 
     data_paths = pd.read_csv(args.data_path)
     hist, model = train_model(data_paths, args,
-        callbacks=[epoch_time, batch_loss])
+        callbacks=[model_checkpoint, batch_loss, epoch_loss])
 
     ####################### Save output #######################
 
     model.save(out_dir)
-
-    # Add epoch times to history
-    hist.history['epoch_time'] = epoch_time.times
-
-    # Save epoch losses
-    out_file = os.path.join(out_dir, 'epoch_history.csv')
-    df = pd.DataFrame(hist.history)
-    df.index.names=['epoch']
-    df.index += 1
-    df.to_csv(out_file)
