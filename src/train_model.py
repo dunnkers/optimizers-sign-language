@@ -19,56 +19,39 @@ def train_model(data_paths,
                 classes=26,
                 dims=(224, 224, 3),
                 callbacks=[]):
-    ####################### Set some miscellaneous parameters #######################
-
-    AUTOTUNE = tf.data.AUTOTUNE
-
-    ####################### Set hyperparameters #######################
-
-    DIMS = dims
-    CLASSES = classes
-    BATCH_SIZE = args.batch_size
-    OPTIMIZER = args.optimizer
-    EPOCHS = args.epochs
-    STEPS_PER_EPOCH = args.steps_per_epoch
-    VALIDATION_STEPS = args.validation_steps
-
-
     ####################### Load data #######################
 
     ds_train = getdataset(
         data_paths,
-        batch_size=BATCH_SIZE,
-        input_shape=DIMS[:2],
+        batch_size=args.batch_size,
+        input_shape=dims[:2],
         seed=seed,
         validation_split=0.1,
         subset='training'
     )
-
-    ds_train = ds_train.cache().prefetch(AUTOTUNE)
+    ds_train = ds_train.cache().prefetch(2)
 
     ds_test = getdataset(
         data_paths,
-        batch_size=BATCH_SIZE,
-        input_shape=DIMS[:2],
+        batch_size=args.batch_size,
+        input_shape=dims[:2],
         seed=seed,
         validation_split=0.1,
         subset='validation'
     )
-
-    ds_test = ds_test.cache().prefetch(AUTOTUNE)
+    ds_test = ds_test.cache().prefetch(2)
 
 
     ####################### Configure model #######################
 
-    i = Input(DIMS)
+    i = Input(dims)
     x = tf.keras.applications.mobilenet_v3.preprocess_input(i)
-    x = MobileNetV3Small(input_tensor=x, classes=CLASSES, weights=None)(x)
+    x = MobileNetV3Small(input_tensor=x, classes=classes, weights=None)(x)
 
     model = tf.keras.Model(inputs=i, outputs=x)
 
     model.compile(
-        optimizer=OPTIMIZER, 
+        optimizer=args.optimizer, 
         loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
         metrics=['accuracy',
                 'categorical_accuracy',
@@ -80,9 +63,9 @@ def train_model(data_paths,
 
     hist = model.fit(ds_train, 
                     validation_data=ds_test, 
-                    epochs=EPOCHS,
-                    steps_per_epoch=STEPS_PER_EPOCH,
-                    validation_steps=VALIDATION_STEPS,
+                    epochs=args.epochs,
+                    steps_per_epoch=args.steps_per_epoch,
+                    validation_steps=args.validation_steps,
                     callbacks=callbacks)
 
     return hist, model
