@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --time=24:00:00
-#SBATCH --mem=50000
+#SBATCH --time=01:30:00
+#SBATCH --mem=128000
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1
 #SBATCH --job-name=dl-sign-language
 #SBATCH --output=logs/slurm-%A_%a.out
-#SBATCH --array=1,5,10
+#SBATCH --array=1
 # → do make sure /logs directory exists!
 
 module load Python/3.8.2-GCCcore-9.3.0

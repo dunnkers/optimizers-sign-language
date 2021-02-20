@@ -9,7 +9,8 @@ from tensorflow.keras.layers import Input
 from keras.metrics import top_k_categorical_accuracy
 
 from dataset import getdataset
-from time_history import TimeHistory
+from callbacks.epoch_time import EpochTime
+from callbacks.batch_loss import BatchLoss
 
 
 def train_model(data_paths,
@@ -101,20 +102,30 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--name', dest='model_name', default='my_model')
     args = parser.parse_args()
 
+    ####################### Callbacks  #######################
+    
+    out_dir = os.path.join(args.output_dir, args.model_name)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    epoch_time = EpochTime()
+    batch_loss = BatchLoss(os.path.join(out_dir, 'batch_loss.csv'))
+
     ####################### Train model #######################
 
     data_paths = pd.read_csv(args.data_path)
-    time_callback = TimeHistory()
-    hist, model = train_model(data_paths, args, callbacks=[time_callback])
+    hist, model = train_model(data_paths, args,
+        callbacks=[epoch_time, batch_loss])
 
     ####################### Save output #######################
 
-    out_dir = os.path.join(args.output_dir, args.model_name)
     model.save(out_dir)
 
     # Add epoch times to history
-    hist.history['epoch_time'] = time_callback.times
+    hist.history['epoch_time'] = epoch_time.times
 
-    out_file = os.path.join(out_dir, 'history.json')
-    with open(out_file, 'w') as f:
-        json.dump(hist.history, f)
+    # Save epoch losses
+    out_file = os.path.join(out_dir, 'epoch_history.csv')
+    df = pd.DataFrame(hist.history)
+    df.index.names=['epoch']
+    df.index += 1
+    df.to_csv(out_file)

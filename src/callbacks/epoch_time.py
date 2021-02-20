@@ -1,7 +1,7 @@
 import time
-import keras
+from tensorflow.keras.callbacks import Callback
 
-class TimeHistory(keras.callbacks.Callback):
+class EpochTime(Callback):
     def on_train_begin(self, logs={}):
         self.times = []
 
