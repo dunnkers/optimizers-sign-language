@@ -10,7 +10,7 @@ class OptimizerEncoding(Enum):
     nadam    = 4
     rmsprop  = 5
     sgd      = 6
-    ftr      = 7
+    ftrl     = 7
 
 def get_optimizer(optimizer):
     if optimizer.isdigit(): # choose by int encoding
