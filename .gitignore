@@ -6,3 +6,4 @@ venv
 /models
 /logs/*
 !/logs/.gitkeep
+__pycache__
