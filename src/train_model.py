@@ -106,16 +106,17 @@ if __name__ == '__main__':
     
     batch_loss = BatchLoss(os.path.join(out_dir, 'batch_loss.csv'))
     epoch_loss = EpochLoss(os.path.join(out_dir, 'epoch_loss.csv'))
-    model_file = os.path.join(out_dir, 'checkpoints', 
-        r'epoch={epoch},val_loss={val_loss:.2f}.h5')
-    model_checkpoint = ModelCheckpoint(model_file, verbose=1)
+    model_file = os.path.join(out_dir, 'checkpoints')
+    model_checkpoint = ModelCheckpoint(model_file,
+                                       verbose=1,
+                                       save_best_only=True)
 
 
     ####################### Train model #######################
 
     data_paths = pd.read_csv(args.data_path)
     hist, model = train_model(data_paths, args,
-        callbacks=[model_checkpoint, batch_loss, epoch_loss])
+        callbacks=[batch_loss, epoch_loss, model_checkpoint])
 
     ####################### Save output #######################
 
