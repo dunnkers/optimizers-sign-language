@@ -46,9 +46,9 @@ def train_model(data_paths,
 
     i = Input(dims)
     x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
-    x = MobileNetV2(input_tensor=x, classes=classes, weights=None)(x)
+    x = MobileNetV2(classes=classes, weights=None)(x)
 
-    model = tf.keras.Model(inputs=i, outputs=x)
+    model = tf.keras.Model(inputs=[i], outputs=[x])
 
     model.compile(
         optimizer=args.optimizer, 
