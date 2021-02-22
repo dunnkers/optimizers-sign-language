@@ -12,6 +12,7 @@ class TestTrainModel(unittest.TestCase):
         args = Namespace()
         args.batch_size = 32
         args.optimizer = 'adam'
+        args.inv_learning_rate = 100 # inverse: so converted to 0.001
         args.epochs = 1
         args.steps_per_epoch = None
         args.validation_steps = None

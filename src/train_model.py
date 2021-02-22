@@ -78,6 +78,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--path', dest='data_path', required=True)
     parser.add_argument('-b', '--batch-size', dest='batch_size', type=int, default=32)
     parser.add_argument('-o', '--optimizer', dest='optimizer', default='adam')
+    parser.add_argument('-l', '--inv-learning-rate', dest='inv_learning_rate', type=int, default=1000)
     parser.add_argument('-e', '--epochs', dest='epochs', type=int, default=10)
     parser.add_argument('-s', '--steps-per-epoch', dest='steps_per_epoch', type=int)
     parser.add_argument('-v', '--validation-steps', dest='validation_steps', type=int)
@@ -96,7 +97,8 @@ if __name__ == '__main__':
     print(f'Using optimizer: {args.optimizer._name}')
     # Determine and print config
     optim_config = args.optimizer.get_config()
-    df_config = pd.DataFrame.from_records([ args.optimizer.get_config() ])
+    optim_config['learning_rate'] = 1 / args.inv_learning_rate
+    df_config = pd.DataFrame.from_records([ optim_config ])
     df_config.to_csv(os.path.join(out_dir, 'optimizer.csv'), index=False)
     print(f'Optimizer config:')
     print(df_config)
