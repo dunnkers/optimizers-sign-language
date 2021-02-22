@@ -46,16 +46,13 @@ def train_model(data_paths,
 
     i = Input(dims)
     x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
-    x = MobileNetV2(classes=classes,
-        weights=None, 
-        classifier_activation=None # softmax by default - use logit instead
-    )(x)
+    x = MobileNetV2(classes=classes, weights=None)(x)
 
     model = tf.keras.Model(inputs=[i], outputs=[x])
 
     model.compile(
         optimizer=args.optimizer, 
-        loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True), 
+        loss=tf.keras.losses.CategoricalCrossentropy(), 
         metrics=['accuracy',
                 'categorical_accuracy',
                 top_k_categorical_accuracy])
@@ -120,7 +117,7 @@ if __name__ == '__main__':
 
     data_paths = pd.read_csv(args.data_path)
     hist, model = train_model(data_paths, args,
-        callbacks=[batch_loss, epoch_loss, model_checkpoint])
+        callbacks=[epoch_loss, model_checkpoint])
 
     ####################### Save output #######################
 
