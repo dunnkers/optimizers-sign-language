@@ -46,7 +46,10 @@ def train_model(data_paths,
 
     i = Input(dims)
     x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
-    x = MobileNetV2(classes=classes, weights=None)(x)
+    x = MobileNetV2(classes=classes,
+        weights=None, 
+        classifier_activation=None # softmax by default - use logit instead
+    )(x)
 
     model = tf.keras.Model(inputs=[i], outputs=[x])
 
@@ -98,7 +101,8 @@ if __name__ == '__main__':
     optim_config = args.optimizer.get_config()
     df_config = pd.DataFrame.from_records([ args.optimizer.get_config() ])
     df_config.to_csv(os.path.join(out_dir, 'optimizer.csv'), index=False)
-    print(f'Optimizer config: \n{df_config}')
+    print(f'Optimizer config:')
+    print(df_config)
     # Adapt new optimizer config
     args.optimizer = args.optimizer.from_config(optim_config)
 
