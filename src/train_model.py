@@ -97,6 +97,13 @@ if __name__ == '__main__':
     print(f'Using optimizer: {args.optimizer._name}')
     # Determine and print config
     optim_config = args.optimizer.get_config()
+    if args.optimizer._name.lower() == 'sgd':
+        optim_config['momentum'] = 0.9
+        optim_config['nesterov'] = True
+    if args.optimizer._name.lower() == 'rmsprop':
+        optim_config['momentum'] = 0.9
+    if args.optimizer._name.lower() == 'ftrl':
+        optim_config['l2_regularization_strength'] = 1.0
     optim_config['learning_rate'] = 1 / args.inv_learning_rate
     df_config = pd.DataFrame.from_records([ optim_config ])
     df_config.to_csv(os.path.join(out_dir, 'optimizer.csv'), index=False)
