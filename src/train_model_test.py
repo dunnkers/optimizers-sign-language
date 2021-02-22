@@ -21,12 +21,15 @@ class TestTrainModel(unittest.TestCase):
         cls.model = model
         cls.x = tf.random.uniform((32, 224, 224, 3)) # a random batch
 
-    def test_train_model_one_epoch(self):
+    def test_one_epoch(self):
         """Weights should have changed; i.e. no uniform prediction"""
         self.assertFalse(np.allclose(
             self.model.predict(self.x)[0], # prediction
             np.ones(26)/26)                # uniform probability vector
         )
+
+    def test_probability_vector(self):
+        self.assertTrue(np.isclose(np.sum(self.model.predict(self.x)[0]), 1))
 
     def test_save_and_load(self):
         with tempfile.TemporaryDirectory() as dirpath:
