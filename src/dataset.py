@@ -3,6 +3,7 @@ from tensorflow.python.keras.preprocessing.image_dataset import paths_and_labels
 from tensorflow.python.keras.preprocessing import dataset_utils
 from tensorflow.python.keras.layers.preprocessing import image_preprocessing
 from keras.utils import to_categorical
+import numpy as np
 
 def getdataset(data,
                label_mode='int',
@@ -25,18 +26,27 @@ def getdataset(data,
     
     Returns: a tf.data.Dataset object
     """
-    # Load data from DataFrame
-    image_paths = data['filepath'].values
-    labels, class_names = pd.factorize(data['class'].sort_values())
-    num_classes = len(data['class'].unique())
-
-    # Int labels to one-hot-encoded vector
-    labels = to_categorical(labels, dtype='int8')
-
     # Check args
     interpolation = image_preprocessing.get_interpolation(interpolation)
     dataset_utils.check_validation_split_arg(
         validation_split, subset, shuffle, seed)
+    
+    # Load data from DataFrame
+    image_paths = data['filepath'].values
+    num_classes = len(data['class'].unique())
+    labels, class_names = pd.factorize(data['class'])
+    class_names = class_names.sort_values()
+    labels = to_categorical(labels, dtype='int8') # to one-hot-encoded vector
+
+    # Shuffle all filepaths and labels
+    if shuffle:
+        # Shuffle globally to erase macro-structure
+        if seed is None:
+            seed = np.random.randint(1e6)
+        rng = np.random.RandomState(seed)
+        rng.shuffle(image_paths)
+        rng = np.random.RandomState(seed)
+        rng.shuffle(labels)
 
     # CV split
     image_paths, labels = dataset_utils.get_training_or_validation_split(
