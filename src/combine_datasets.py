@@ -22,6 +22,8 @@ def combine_datasets(data_dir, class_encoding='subdirectory'):
 
     # Define class as last subdirectory
     if class_encoding == 'subdirectory':
+        df['dataset'] = df['filepath'].apply(os.path.relpath, args=(data_dir,))
+        df['dataset'] = df['dataset'].str.split('/').str[0]
         df['class'] = df['filepath'].str.split('/').str[-2]
     else: # could also use first filename character
         df['class'] = df['filename'].str[0]

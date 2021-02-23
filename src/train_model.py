@@ -84,6 +84,7 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--validation-steps', dest='validation_steps', type=int)
     parser.add_argument('-d', '--output_dir', dest='output_dir', default='models')
     parser.add_argument('-n', '--name', dest='model_name', default='my_model')
+    parser.add_argument('-t', '--take-samples', dest='samples', type=int, default=None)
     args = parser.parse_args()
 
     ####################### Out directory  #######################
@@ -125,6 +126,15 @@ if __name__ == '__main__':
     ####################### Train model #######################
 
     data_paths = pd.read_csv(args.data_path)
+    if 'dataset' in data_paths and args.samples != None:
+        n_datasets = len(data_paths['dataset'].unique())
+        print(f'Taking {args.samples} samples from {n_datasets} datasets.')
+        counts = data_paths.groupby('dataset')\
+           .agg({'filepath': 'count'})\
+           .rename(columns={'filepath': 'samples'})
+        df = data_paths.join(counts, on='dataset')
+        df['sample_probability'] = df['samples'].unique().sum() / df['samples']
+        data_paths = df.sample(n=args.samples, weights='sample_probability')
     hist, model = train_model(data_paths, args,
         callbacks=[epoch_loss, model_checkpoint])
 
