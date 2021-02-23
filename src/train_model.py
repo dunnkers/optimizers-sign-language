@@ -45,6 +45,7 @@ def train_model(data_paths,
 
     ####################### Configure model #######################
 
+    print(f'Using weights: {weights}')
     if weights == None: # learn from scratch
         i = Input(dims)
         x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
@@ -150,7 +151,7 @@ if __name__ == '__main__':
 
     data_paths = pd.read_csv(args.data_path)
     hist, model = train_model(data_paths, args,
-        callbacks=[epoch_loss, model_checkpoint])
+        callbacks=[epoch_loss, model_checkpoint], weights=args.weights)
 
     ####################### Save output #######################
 
