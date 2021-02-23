@@ -16,8 +16,9 @@ class TestTrainModel(unittest.TestCase):
         args.epochs = 1
         args.steps_per_epoch = None
         args.validation_steps = None
-        data = combine_datasets('./test_data', class_encoding='file')
-        hist, model = train_model(data, args)
+        cls.args = args
+        cls.data = combine_datasets('./test_data', class_encoding='file')
+        _, model = train_model(cls.data, cls.args)
         cls.model = model
         cls.x = tf.random.uniform((32, 224, 224, 3)) # a random batch
 
@@ -38,6 +39,16 @@ class TestTrainModel(unittest.TestCase):
             real   =   self.model.predict(self.x)
             loaded = loaded_model.predict(self.x)
             self.assertTrue(np.allclose(real, loaded))
+
+    def test_imagenet(self):
+        """ Predictions should be non-uniform right from the start - without
+        even running 1 epoch."""
+        self.args.epochs = 0
+        _, model = train_model(self.data, self.args, weights='imagenet')
+        self.assertFalse(np.allclose(
+            model.predict(self.x)[0],      # prediction
+            np.ones(26)/26)                # uniform probability vector
+        )
 
 if __name__ == '__main__':
     unittest.main()
