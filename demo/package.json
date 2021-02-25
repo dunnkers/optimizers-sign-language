@@ -1,0 +1,47 @@
+{
+  "name": "sign-language-detection",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.2.0",
+    "@tensorflow/tfjs-converter": "^3.2.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "antd": "^4.7.3",
+    "blueimp-load-image": "^5.14.0",
+    "lodash.orderby": "^4.6.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-images-upload": "^1.2.8",
+    "react-scripts": "3.4.4",
+    "react-syntax-highlighter": "^15.2.1"
+  },
+  "homepage": "https://dunnkers.com/deep-learning",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.1.0"
+  }
+}
