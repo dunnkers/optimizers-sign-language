@@ -9,7 +9,13 @@ export default {
     const tfImg = tf.browser.fromPixels(img);
     const smalImg = tf.image.resizeBilinear(tfImg, [64, 64]);
     const resized = tf.cast(smalImg, 'float32');
-    const t4d = tf.tensor4d(Array.from(resized.dataSync()),[1,64,64,3])
+    let t4d = tf.tensor4d(Array.from(resized.dataSync()),[1,64,64,3])
+
+    // standardize
+    const mean = t4d.mean().dataSync();
+    t4d = t4d.sub(mean);                      // 0 mean
+    t4d.sub(mean).pow(2).div(t4d.size).sqrt() // divided by std dev.
+
     return t4d;
   },
 
