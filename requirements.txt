@@ -2,3 +2,4 @@ kaggle
 numpy
 pandas
 tensorflow==1.*
+keras==2.1.5

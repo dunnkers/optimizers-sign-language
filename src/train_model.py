@@ -35,7 +35,7 @@ def train_model(data_path,
     ####################### Configure model #######################
 
     my_model = Sequential()
-    my_model.add(Conv2D(64, kernel_size=4, strides=1, activation='relu', input_shape=target_dims))
+    my_model.add(Conv2D(64, kernel_size=4, strides=1, activation='relu', input_shape=dims))
     my_model.add(Conv2D(64, kernel_size=4, strides=2, activation='relu'))
     my_model.add(Dropout(0.5))
     my_model.add(Conv2D(128, kernel_size=4, strides=1, activation='relu'))
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     optim = None
     for optimizer in optimizers:
         n, obj = optimizer
-        if n == args.optimizer.tolower():
+        if n.lower() == args.optimizer.lower():
             name = n
             optim = obj
     optim_path = os.path.join(out_dir, 'optimizer.json')
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     seed(1)
     set_random_seed(2)
     my_model = train_model(args.data_path, args,
-        callbacks=[epoch_loss], weights=args.weights)
+        callbacks=[epoch_loss])
 
     ####################### Save output #######################
 
