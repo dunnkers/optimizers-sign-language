@@ -1,6 +1,4 @@
 from enum import Enum
-from tensorflow.python.keras.optimizers import get
-from adabelief_tf import AdaBeliefOptimizer
 
 class OptimizerEncoding(Enum):
     """ See `tensorflow.python.keras.optimizers` """
@@ -18,7 +16,7 @@ def get_optimizer(optimizer):
     if optimizer.isdigit(): # choose by int encoding
         optimizer = OptimizerEncoding(int(optimizer)).name
     if optimizer == 'adabelief':
-        return AdaBeliefOptimizer(learning_rate=1e-3, epsilon=1e-8,
-            rectify=False, weight_decay=1e-2)
+        return (optimizer, AdaBeliefOptimizer(learning_rate=1e-3, epsilon=1e-8,
+            rectify=False, weight_decay=1e-2))
     else:
-        return get(optimizer)
+        return (optimizer, get(optimizer))
