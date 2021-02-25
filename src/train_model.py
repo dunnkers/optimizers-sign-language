@@ -18,7 +18,8 @@ def train_model(data_paths,
                 seed=42,
                 classes=26,
                 dims=(224, 224, 3),
-                callbacks=[]):
+                callbacks=[],
+                weights=None):
     ####################### Load data #######################
 
     ds_train = getdataset(
@@ -44,11 +45,34 @@ def train_model(data_paths,
 
     ####################### Configure model #######################
 
-    i = Input(dims)
-    x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
-    x = MobileNetV2(classes=classes, weights=None)(x)
+    print(f'Using weights: {weights}')
+    if weights == None: # learn from scratch
+        i = Input(dims)
+        x = tf.keras.applications.mobilenet_v2.preprocess_input(i)
+        x = MobileNetV2(classes=classes, weights=None)(x)
+        model = tf.keras.Model(inputs=[i], outputs=[x])
+    else:               # apply transfer learning
+        base_model = MobileNetV2(
+            include_top=False,
+            weights=weights,
+            input_shape=dims)
+        base_model.trainable = False
+        
+        # layers
+        global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+        dense_layer = tf.keras.layers.Dense(1024, activation='relu')
+        prediction_layer = tf.keras.layers.Dense(26, activation='softmax')
 
-    model = tf.keras.Model(inputs=[i], outputs=[x])
+        # construct pipeline
+        inputs = tf.keras.Input(shape=dims)
+        x = tf.keras.applications.mobilenet_v2.preprocess_input(inputs)
+        x = base_model(x, training=False)
+        x = global_average_layer(x)
+        x = dense_layer(x)
+        x = tf.keras.layers.Dropout(0.2)(x)
+        outputs = prediction_layer(x)
+        model = tf.keras.Model(inputs, outputs)
+
 
     model.compile(
         optimizer=args.optimizer, 
@@ -85,6 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--output_dir', dest='output_dir', default='models')
     parser.add_argument('-n', '--name', dest='model_name', default='my_model')
     parser.add_argument('-t', '--take-samples', dest='samples', type=int, default=None)
+    parser.add_argument('-w', '--weights', dest='weights', default=None)
     args = parser.parse_args()
 
     ####################### Out directory  #######################
@@ -136,7 +161,7 @@ if __name__ == '__main__':
         df['sample_probability'] = df['samples'].unique().sum() / df['samples']
         data_paths = df.sample(n=args.samples, weights='sample_probability')
     hist, model = train_model(data_paths, args,
-        callbacks=[epoch_loss, model_checkpoint])
+        callbacks=[epoch_loss, model_checkpoint], weights=args.weights)
 
     ####################### Save output #######################
 
