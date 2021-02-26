@@ -49,7 +49,7 @@ function App() {
         <small>
           <Text type='secondary'>
             &gt; All our code is available on&nbsp;
-            <Link href='https://github.com/dunnkers/deep-learning/'>Github <img src={p+'/github32.png'} 
+            <Link href='https://github.com/dunnkers/optimizers-sign-language'>Github <img src={p+'/github32.png'} 
               alt='Github logo'
               style={{width: 16, verticalAlign: 'text-bottom'}} />
             </Link>
