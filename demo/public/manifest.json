@@ -1,6 +1,6 @@
 {
   "short_name": "Sign Language Detection",
-  "name": "Sign Language Detection using Deep Learning",
+  "name": "Sign Language Detection demo using Deep Learning",
   "icons": [
     {
       "src": "favicon.ico",
