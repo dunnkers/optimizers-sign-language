@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/optimizers-sign-language/static/css/main.4383de78.chunk.css",
+    "main.js": "/optimizers-sign-language/static/js/main.6a329ea0.chunk.js",
+    "main.js.map": "/optimizers-sign-language/static/js/main.6a329ea0.chunk.js.map",
+    "runtime-main.js": "/optimizers-sign-language/static/js/runtime-main.9f3d028b.js",
+    "runtime-main.js.map": "/optimizers-sign-language/static/js/runtime-main.9f3d028b.js.map",
+    "static/css/2.73624963.chunk.css": "/optimizers-sign-language/static/css/2.73624963.chunk.css",
+    "static/js/2.800966e3.chunk.js": "/optimizers-sign-language/static/js/2.800966e3.chunk.js",
+    "static/js/2.800966e3.chunk.js.map": "/optimizers-sign-language/static/js/2.800966e3.chunk.js.map",
+    "index.html": "/optimizers-sign-language/index.html",
+    "precache-manifest.95b30bf91419d91e783d59bad8409e7b.js": "/optimizers-sign-language/precache-manifest.95b30bf91419d91e783d59bad8409e7b.js",
+    "service-worker.js": "/optimizers-sign-language/service-worker.js",
+    "static/css/2.73624963.chunk.css.map": "/optimizers-sign-language/static/css/2.73624963.chunk.css.map",
+    "static/css/main.4383de78.chunk.css.map": "/optimizers-sign-language/static/css/main.4383de78.chunk.css.map",
+    "static/js/2.800966e3.chunk.js.LICENSE.txt": "/optimizers-sign-language/static/js/2.800966e3.chunk.js.LICENSE.txt",
+    "static/media/UploadIcon.svg": "/optimizers-sign-language/static/media/UploadIcon.1cedb6e9.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9f3d028b.js",
+    "static/css/2.73624963.chunk.css",
+    "static/js/2.800966e3.chunk.js",
+    "static/css/main.4383de78.chunk.css",
+    "static/js/main.6a329ea0.chunk.js"
+  ]
+}
