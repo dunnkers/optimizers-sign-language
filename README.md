@@ -3,6 +3,11 @@ Deep Learning (20/21) `WMAI017-05.2020-2021.2A`
 
 Uses [data](https://www.kaggle.com/grassknoted/asl-alphabet) describing the ASL alphabet and tries to classify the images correctly using an adapted custom Neural Network, built with TensorFlow/Keras. Runs the model fitting multiple times for various optimizers, such that we can compare various optimizers against each other.
 
+## Demo
+Demonstrates the sign language detection model using **TensorFlow.js**:
+
+[![Screenshot 2022-07-09 at 19 01 23](https://user-images.githubusercontent.com/744430/178115693-41728037-9cd7-412b-bf0c-90b4eaf83634.png)](https://dunnkers.com/optimizers-sign-language/)
+
 ## Usage
 1. Follow the setup from the [official Kaggle API repo](https://github.com/Kaggle/kaggle-api#api-credentials). Make sure `~/.kaggle/kaggle.json` exists.
 
